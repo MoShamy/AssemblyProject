@@ -127,7 +127,11 @@ void readInstructions(std::string filename)
         line.erase(0, line.find(' ') + 2);
 
         try {
-            if (temp.opcode == "ADD" || temp.opcode == "SUB" || temp.opcode =="SLL"|| temp.opcode =="SLT"|| temp.opcode =="SLTU"|| temp.opcode =="XOR   "|| temp.opcode =="SRL"|| temp.opcode =="SRA"|| temp.opcode =="OR"|| temp.opcode =="AND") {
+            //////////////////////////////
+            if (temp.opcode =="FENCE"|| temp.opcode =="ECALL"|| temp.opcode =="EBREAK"){
+                break;
+            }
+            else if (temp.opcode == "ADD" || temp.opcode == "SUB" || temp.opcode =="SLL"|| temp.opcode =="SLT"|| temp.opcode =="SLTU"|| temp.opcode =="XOR   "|| temp.opcode =="SRL"|| temp.opcode =="SRA"|| temp.opcode =="OR"|| temp.opcode =="AND") {
                 parseRInstruction(temp, line);
             } else if (temp.opcode == "ADDI"|| temp.opcode == "SLTI" || temp.opcode =="SLTIU"|| temp.opcode =="XORI"|| temp.opcode =="ORI"|| temp.opcode =="ANDI"|| temp.opcode =="SLLI"|| temp.opcode =="SRLI"|| temp.opcode =="SRAI") {
                 parseIInstruction(temp, line);
@@ -147,9 +151,7 @@ void readInstructions(std::string filename)
             else if (temp.opcode =="SW"|| temp.opcode =="SB"|| temp.opcode =="SH"){
                 parseStoreInstruction(temp, line);
             }
-            else if (temp.opcode =="FENCE"|| temp.opcode =="ECALL"|| temp.opcode =="EBREAK"){
-                
-            }
+            
 
             else {
                 std::cout << "Unknown instruction: " << temp.opcode << std::endl;

@@ -24,37 +24,143 @@ struct instruction
 
 std::vector<instruction> instructions;
 
+void parseRInstruction(instruction& temp, std::string line){
+    temp.rd = stoi(line.substr(0, line.find(',')));
+    line.erase(0, line.find(',') + 3);
+    temp.rs = stoi(line.substr(0, line.find(',')));
+    line.erase(0, line.find(',') + 3);
+    temp.rt = stoi(line.substr(0, line.find(',')));
+}
+
+
+void parseIInstruction(instruction& temp, std::string line){
+
+    int rt = stoi(line.substr(0, line.find(',')));
+    std::cout<<rt;
+    temp.rt = rt;
+    line.erase(0, line.find(',') + 3);
+    int rs = stoi(line.substr(0, line.find(',')));
+    std::cout<<rs;
+    temp.rs = rs;
+    line.erase(0, line.find(',') + 2);
+
+    // Extract the immediate value
+    int immediate = stoi(line);
+    std::cout<<immediate;
+    temp.immediate = immediate;
+    
+}
+
+//LUI AUIPC JAL 
+void parseUInstruction(instruction& temp, std::string line){
+    temp.rd = stoi(line.substr(0, line.find(',')));
+    line.erase(0, line.find(',') + 2);
+    
+    // Extract the immediate value
+    int immediate = stoi(line);
+    std::cout<<immediate;
+    temp.immediate = immediate;
+}
+
+//BEQ ,BNE, BLT ,BGE, BLTU ,BGEU
+void parseBInstruction(instruction& temp, std::string line){
+    temp.rd = stoi(line.substr(0, line.find(',')));
+    line.erase(0, line.find(',') + 3);
+    temp.rs = stoi(line.substr(0, line.find(',')));
+    line.erase(0, line.find(',') + 2);
+    temp.rt = stoi(line.substr(0, line.find(',')));
+
+    // Extract the immediate value
+    int immediate = stoi(line);
+    std::cout<<immediate;
+    temp.immediate = immediate;
+
+}
+
+void parseJALRInstruction(instruction& temp, std::string line){
+    temp.rd = stoi(line.substr(0, line.find(',')));
+    line.erase(0, line.find(',') + 3);
+    temp.rs = stoi(line.substr(0, line.find(',')));
+    line.erase(0, line.find(',') + 2);
+
+    // Extract the immediate value
+    int immediate = stoi(line);
+    temp.immediate = immediate;
+
+}
+
+//LB LW LBU LHU
+void parseLoadInstruction(instruction& temp, std::string line){
+    temp.rd = stoi(line.substr(0, line.find(',')));
+    line.erase(0, line.find(',') + 1);
+    temp.immediate = stoi(line.substr(0, line.find('(')));
+    line.erase(0, line.find('(') + 2);
+    temp.rs = stoi(line.substr(0, line.find(')')));
+}
+
+
+//SB SH SW
+void parseStoreInstruction(instruction& temp, std::string line){
+    temp.rt = stoi(line.substr(0, line.find(',')));
+    line.erase(0, line.find(',') + 1);
+    temp.immediate = stoi(line.substr(0, line.find('(')));
+    line.erase(0, line.find('(') + 2);
+    temp.rs = stoi(line.substr(0, line.find(')')));
+}
+
+
+
 void readInstructions(std::string filename)
 {
     std::ifstream file(filename);
     std::string line;
-    std::ifstream f(filename.c_str());
-    std::cout<< f.good()<<std::endl;
 
-    while (getline(file, line))
-    {
-        std::cout<<line<<std::endl;
+    if (!file.is_open()) {
+        std::cout << "File not opened";
+        exit(1);
+    }
+
+    while (getline(file, line)) {
+        std::cout << line << std::endl;
         instruction temp;
         temp.opcode = line.substr(0, line.find(' '));
         line.erase(0, line.find(' ') + 2);
 
-        if (temp.opcode == "ADD" | temp.opcode == "SUB" | temp.opcode == "AND" | temp.opcode == "OR" | temp.opcode == "XOR" | temp.opcode == "NOR" | temp.opcode == "SLT")
-        {
-            std::cout << stoi(line.substr(0, line.find(','))) << std::endl;
-            temp.rd = stoi(line.substr(0, line.find(',')));
-            line.erase(0, line.find(',') + 3);
-            std::cout << stoi(line.substr(0, line.find(','))) << std::endl;
-            temp.rs = stoi(line.substr(0, line.find(',')));
-            line.erase(0, line.find(',') + 3);
-            std::cout << stoi(line.substr(0, line.find(','))) << std::endl;
-            temp.rt = stoi(line.substr(0, line.find(',')));
+        try {
+            if (temp.opcode == "ADD" || temp.opcode == "SUB" || temp.opcode =="SLL"|| temp.opcode =="SLT"|| temp.opcode =="SLTU"|| temp.opcode =="XOR   "|| temp.opcode =="SRL"|| temp.opcode =="SRA"|| temp.opcode =="OR"|| temp.opcode =="AND") {
+                parseRInstruction(temp, line);
+            } else if (temp.opcode == "ADDI"|| temp.opcode == "SLTI" || temp.opcode =="SLTIU"|| temp.opcode =="XORI"|| temp.opcode =="ORI"|| temp.opcode =="ANDI"|| temp.opcode =="SLLI"|| temp.opcode =="SRLI"|| temp.opcode =="SRAI") {
+                parseIInstruction(temp, line);
+            } 
+            else if (temp.opcode =="BEQ"|| temp.opcode == "BNE"|| temp.opcode ==" BLT"|| temp.opcode =="BGE"|| temp.opcode ==" BLTU" || temp.opcode =="BGEU"){
+                parseBInstruction(temp, line);
+            }
+            else if (temp.opcode =="LUI"|| temp.opcode == "AUIPC"|| temp.opcode == "JAL" ){
+                parseUInstruction(temp, line);
+            }
+            else if(temp.opcode =="JALR"){
+                parseJALRInstruction(temp, line);
+            }
+            else if (temp.opcode =="LB"|| temp.opcode =="LW"|| temp.opcode =="LBU"|| temp.opcode =="LHU"){
+                parseLoadInstruction(temp, line);
+            }
+            else if (temp.opcode =="SW"|| temp.opcode =="SB"|| temp.opcode =="SH"){
+                parseStoreInstruction(temp, line);
+            }
+            else if (temp.opcode =="FENCE"|| temp.opcode =="ECALL"|| temp.opcode =="EBREAK"){
+                
+            }
+
+            else {
+                std::cout << "Unknown instruction: " << temp.opcode << std::endl;
+                exit(1); // Exit the program with an error status code.
+            }
+
+            instructions.push_back(temp);
+        } catch (const std::exception& e) {
+            std::cerr << "An exception occurred: " << e.what() << std::endl;
+            exit(1);
         }
-        else
-        {
-            std::cout << "Invalid instruction" << std::endl;
-            exit(0);
-        }
-        instructions.push_back(temp);
     }
 }
 
@@ -97,7 +203,7 @@ void printAll()
     printRegisterFile();
     printDataMemory();
     printPC();
-    std::cout<<"===============================================";
+    std::cout<<"===============================================\n";
 }
 
 void addFunction()
@@ -450,10 +556,10 @@ void execute()
 int main()
 {
     registerFile[5]=2;
-    readInstructions("C:\\Users\\Ousswa\\Desktop\\ass\\instructions.txt");
+    readInstructions("C:\\Users\\Ousswa\\Desktop\\ass\\AssemblyProject\\instructions.txt");
     std::cout<<instructions.size()<<std::endl;
     initFunctMap();
     execute();
-    // printAll();
+    printAll();
     return 0;
 }

@@ -1,2 +1,9 @@
-ADD x2, x5, x5
-ADDI x2, x2, 2 
+ADD x1, x2, x3
+SUB x4, x5, x6
+ANDI x7, x8, 15
+LUI x9, 1000
+JAL x10, 20
+BEQ x11, x12, 8
+LB x13, 0(x14)
+SB x15, 4(x16)
+ECALL

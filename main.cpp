@@ -36,17 +36,14 @@ void parseRInstruction(instruction& temp, std::string line){
 void parseIInstruction(instruction& temp, std::string line){
 
     int rt = stoi(line.substr(0, line.find(',')));
-    std::cout<<rt;
     temp.rt = rt;
     line.erase(0, line.find(',') + 3);
     int rs = stoi(line.substr(0, line.find(',')));
-    std::cout<<rs;
     temp.rs = rs;
     line.erase(0, line.find(',') + 2);
 
     // Extract the immediate value
     int immediate = stoi(line);
-    std::cout<<immediate;
     temp.immediate = immediate;
     
 }
@@ -58,7 +55,6 @@ void parseUInstruction(instruction& temp, std::string line){
     
     // Extract the immediate value
     int immediate = stoi(line);
-    std::cout<<immediate;
     temp.immediate = immediate;
 }
 
@@ -72,7 +68,6 @@ void parseBInstruction(instruction& temp, std::string line){
 
     // Extract the immediate value
     int immediate = stoi(line);
-    std::cout<<immediate;
     temp.immediate = immediate;
 
 }
@@ -121,7 +116,6 @@ void readInstructions(std::string filename)
     }
 
     while (getline(file, line)) {
-        std::cout << line << std::endl;
         instruction temp;
         temp.opcode = line.substr(0, line.find(' '));
         line.erase(0, line.find(' ') + 2);
@@ -241,8 +235,14 @@ void auipcFunction()
 void jalFunction()
 {
     // registerFile[31] = programCounter + 1;
-    programCounter = programCounter + instructions[programCounter].immediate;
+    // programCounter = programCounter + instructions[programCounter].immediate;
+    // registerFile[instructions[programCounter].rd] = programCounter + 1;
+    
+    // Save the return address in register rd
     registerFile[instructions[programCounter].rd] = programCounter + 1;
+
+    // Jump to the target address
+    programCounter += instructions[programCounter].immediate;
 }
 
 void jalrFunction()
@@ -557,7 +557,14 @@ void execute()
 
 int main()
 {
-    registerFile[5]=2;
+    registerFile[2]=2;
+    registerFile[3]=4;
+    registerFile[5]=7;
+    registerFile[6]=1;
+    registerFile[11]=6;
+    registerFile[12]=6;
+    registerFile[14]=20;
+    registerFile[16]=2;
     readInstructions("C:\\Users\\Ousswa\\Desktop\\ass\\AssemblyProject\\instructions.txt");
     std::cout<<instructions.size()<<std::endl;
     initFunctMap();

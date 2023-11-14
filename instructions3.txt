@@ -1,9 +1,10 @@
-ADDI x1, x0, 5
-SUB x4, x5, x6
-ADDI x7, x7, 15 
-LUI x9, 1000
-JAL x10, 2 
-BEQ x11, x12, 8
-LB x13, 0(x14)
-SB x15, 4(x16)
+AUIPC x1, 65536
+LW x1, 4(x1)
+ADDI x2, x0, 1
+BEQ x1, x0, 20
+SLL x3, x2, x1
+ADD x2, x0, x3
+ADDI x1, x1, -1
+JAL x0, -16
+SW x2, 0(x4)
 ECALL

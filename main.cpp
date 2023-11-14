@@ -130,7 +130,7 @@ void readInstructions(std::string filename)
             } else if (temp.opcode == "ADDI"|| temp.opcode == "SLTI" || temp.opcode =="SLTIU"|| temp.opcode =="XORI"|| temp.opcode =="ORI"|| temp.opcode =="ANDI"|| temp.opcode =="SLLI"|| temp.opcode =="SRLI"|| temp.opcode =="SRAI") {
                 parseIInstruction(temp, line);
             } 
-            else if (temp.opcode =="BEQ"|| temp.opcode == "BNE"|| temp.opcode ==" BLT"|| temp.opcode =="BGE"|| temp.opcode ==" BLTU" || temp.opcode =="BGEU"){
+            else if (temp.opcode =="BEQ"|| temp.opcode == "BNE"|| temp.opcode =="BLT"|| temp.opcode =="BGE"|| temp.opcode ==" BLTU" || temp.opcode =="BGEU"){
                 parseBInstruction(temp, line);
             }
             else if (temp.opcode =="LUI"|| temp.opcode == "AUIPC"|| temp.opcode == "JAL" ){
@@ -229,7 +229,7 @@ void luiFunction()
 
 void auipcFunction()
 {
-    registerFile[instructions[programCounter].rt] = (instructions[programCounter].immediate << 12) + programCounter;
+    registerFile[instructions[programCounter].rd] = (instructions[programCounter].immediate << 12) + programCounter;
 }
 
 void jalFunction()
@@ -253,7 +253,7 @@ void jalrFunction()
 
 void beqFunction()
 {
-    if (registerFile[instructions[programCounter].rs] == registerFile[instructions[programCounter].rt])
+    if (registerFile[instructions[programCounter].rs] == registerFile[instructions[programCounter].rd])
     {
         programCounter = programCounter + (instructions[programCounter].immediate << 1);
     }
@@ -269,7 +269,7 @@ void bneFunction()
 
 void bltFunction()
 {
-    if (registerFile[instructions[programCounter].rs] < registerFile[instructions[programCounter].rt])
+    if (registerFile[instructions[programCounter].rs] < registerFile[instructions[programCounter].rd])
     {
         programCounter = programCounter + (instructions[programCounter].immediate << 1);
     }

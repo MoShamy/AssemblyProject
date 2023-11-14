@@ -1,9 +1,11 @@
-ADDI x1, x0, 5
-SUB x4, x5, x6
-ADDI x7, x7, 15 
-LUI x9, 1000
-JAL x10, 2 
-BEQ x11, x12, 8
-LB x13, 0(x14)
-SB x15, 4(x16)
-ECALL
+ADDI x14, x13, 3
+SLTI x15, x13, 5
+SLTIU x16, x13, 10
+XORI x17, x13, 15
+ORI x18, x13, 7
+ANDI x19, x13, 1
+SLLI x20, x13, 2
+SRLI x21, x13, 1
+SRAI x22, x13, 2
+SB x15, 0(x0)
+SH x16, 2(x0)

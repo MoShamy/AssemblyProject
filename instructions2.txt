@@ -1,9 +1,7 @@
-ADDI x1, x0, 5
-SUB x4, x5, x6
-ADDI x7, x7, 15 
-LUI x9, 1000
-JAL x10, 2 
-BEQ x11, x12, 8
-LB x13, 0(x14)
-SB x15, 4(x16)
+ADDI x28, x28, 1
+ADDI x29, x29, 10
+ADD x30, x30, x28
+ADDI x28, x28, 1
+BEQ x28, x29, 28
+JAL x1, -4
 ECALL

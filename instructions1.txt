@@ -2,7 +2,6 @@ ADDI x1, x0, 5
 SUB x4, x5, x6
 ADDI x7, x7, 1
 BLT x1, x7, -1
-BGT x1, x7, 1
 LB x13, 0(x14)
 SB x15, 4(x16)
 ECALL

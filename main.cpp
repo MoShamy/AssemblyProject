@@ -45,14 +45,14 @@ void parseIInstruction(instruction& temp, std::string line){
     // Extract the immediate value
     int immediate = stoi(line);
     temp.immediate = immediate;
-    
+
 }
 
-//LUI AUIPC JAL 
+//LUI AUIPC JAL
 void parseUInstruction(instruction& temp, std::string line){
     temp.rd = stoi(line.substr(0, line.find(',')));
     line.erase(0, line.find(',') + 2);
-    
+
     // Extract the immediate value
     int immediate = stoi(line);
     temp.immediate = immediate;
@@ -129,7 +129,7 @@ void readInstructions(std::string filename)
                 parseRInstruction(temp, line);
             } else if (temp.opcode == "ADDI"|| temp.opcode == "SLTI" || temp.opcode =="SLTIU"|| temp.opcode =="XORI"|| temp.opcode =="ORI"|| temp.opcode =="ANDI"|| temp.opcode =="SLLI"|| temp.opcode =="SRLI"|| temp.opcode =="SRAI") {
                 parseIInstruction(temp, line);
-            } 
+            }
             else if (temp.opcode =="BEQ"|| temp.opcode == "BNE"|| temp.opcode =="BLT"|| temp.opcode =="BGE"|| temp.opcode ==" BLTU" || temp.opcode =="BGEU"){
                 parseBInstruction(temp, line);
             }
@@ -145,7 +145,7 @@ void readInstructions(std::string filename)
             else if (temp.opcode =="SW"|| temp.opcode =="SB"|| temp.opcode =="SH"){
                 parseStoreInstruction(temp, line);
             }
-            
+
 
             else {
                 std::cout << "Unknown instruction: " << temp.opcode << std::endl;
@@ -297,10 +297,6 @@ void auipcFunction()
 
 void jalFunction()
 {
-    // registerFile[31] = programCounter + 1;
-    // programCounter = programCounter + instructions[programCounter].immediate;
-    // registerFile[instructions[programCounter].rd] = programCounter + 1;
-    
     // Save the return address in register rd
     registerFile[instructions[programCounter].rd] = programCounter + 1;
 

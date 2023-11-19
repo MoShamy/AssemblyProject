@@ -168,14 +168,73 @@ void readInstructions(std::string filename)
 //     }
 // }
 
+std::string decToBinary(int n) 
+{ 
+    std::vector<int> binaryNum(32); 
+    std::vector<int> arr(32);
+    std::string output = "";
+    // counter for binary array 
+    int i = 0; 
+    while (i < 32) { 
+        // storing remainder in binary array and the rest with 0
+        if ( n <= 0) {
+            binaryNum[i] = 0;
+            i++;
+            continue;
+        }
+        else {
+            binaryNum[i] = n % 2; 
+            n = n / 2; 
+            i++;
+        }
+    } 
+    for (int j = i - 1; j >= 0; j--) 
+        arr[32-1-j] = binaryNum[j]; 
+    for (int i = 0; i < 32; i++)
+        output += std::to_string(arr[i]);
+    return output; 
+} 
+std::string decToHex(int n) 
+{ 
+    // ans string to store hexadecimal number 
+    std::string ans = ""; 
+    
+    while (n != 0) { 
+        int rem = 0; 
+        char ch; 
+        rem = n % 16; 
+        if (rem < 10) { 
+            ch = rem + 48; 
+        } 
+        else { 
+            ch = rem + 55; 
+        } 
+        ans += ch; 
+        n = n / 16; 
+    } 
+    int i = 0, j = ans.size() - 1; 
+    while(i <= j) 
+    { 
+      std::swap(ans[i], ans[j]); 
+      i++; 
+      j--; 
+    } 
+    if (ans.empty()) {
+        ans = "0";
+    }
+    return ans; 
+}
+
+
 void printRegisterFile()
 {
     std::cout << "Register File:" << std::endl;
     for (int i = 0; i < 32; i++)
     {
-        std::cout << "x" << i << ": " << registerFile[i] << std::endl;
+        std::cout << "x" << i << ": " << registerFile[i] << "  | Binary : " << decToBinary(registerFile[i]) << "  | Hex: " << decToHex(registerFile[i]) << std::endl;
     }
 }
+
 
 void printDataMemory()
 {
@@ -185,13 +244,17 @@ void printDataMemory()
 
     for (auto it = dataMemory.begin(); it != dataMemory.end(); it++)
     {
-        std::cout << it->first << ": " << it->second << std::endl;
+        std::cout << it->first << ": " << it->second << "  ";
+        std::cout << "| Bin:  " << decToBinary(it->first) << ": " << decToBinary(it->second) << "  ";
+        std::cout << "| Hex:  " << decToHex(it->first) << ": " << decToHex(it->second) << std::endl;
     }
 }
 
 void printPC()
 {
-    std::cout << "PC: " << programCounter*4 << std::endl;
+    std::cout << "PC: " << programCounter*4<< "  ";
+    std::cout << "| Bin: " << decToBinary(programCounter*4) << "  ";
+    std::cout << "| Hex: " << decToHex(programCounter*4) << std::endl;
 }
 
 void printAll()

@@ -616,14 +616,7 @@ void execute()
 
 int main()
 {
-//    registerFile[2]=2;
-//    registerFile[3]=4;
-//    registerFile[5]=7;
-//    registerFile[6]=1;
-//    registerFile[11]=6;
-//    registerFile[12]=6;
-//    registerFile[14]=20;
-//    registerFile[16]=2;
+
     int x; //instruction file number
     std:: cout<<"Which instruction file would you like to use?\nEnter a number from 1 to 6: \n";
     std::cin>>x;
